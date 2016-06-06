@@ -425,7 +425,8 @@ var Griddle = React.createClass({
       resultsPerPage: this.props.resultsPerPage || 5,
       showColumnChooser: false,
       isSelectAllChecked: false,
-      selectedRowIds: this.props.selectedRowIds
+      selectedRowIds: this.props.selectedRowIds,
+      selectedRowData: []
     };
     return state;
   },
@@ -640,34 +641,39 @@ var Griddle = React.createClass({
   _toggleSelectAll: function () {
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
       newIsSelectAllChecked = !this.state.isSelectAllChecked,
-      newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds));
+      newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
+      newSelectedRowData = this.state.selectedRowData;
 
     var self = this;
     forEach(visibleRows, function (row) {
-      self._updateSelectedRowIds(row[self.props.uniqueIdentifier], newSelectedRowIds, newIsSelectAllChecked);
+      self._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, newIsSelectAllChecked);
     }, this);
 
     this.setState({
       isSelectAllChecked: newIsSelectAllChecked,
-      selectedRowIds: newSelectedRowIds
+      selectedRowIds: newSelectedRowIds,
+      selectedRowData: newSelectedRowData
     });
-    this.props.onSelectionChange(newSelectedRowIds);
+    this.props.onSelectionChange(newSelectedRowIds, newSelectedRowData);
   },
   _toggleSelectRow: function (row, isChecked) {
 
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
-      newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds));
+        newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
+        newSelectedRowData = this.state.selectedRowData;
 
-    this._updateSelectedRowIds(row[this.props.uniqueIdentifier], newSelectedRowIds, isChecked);
+    this._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, isChecked);
 
     this.setState({
       isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-      selectedRowIds: newSelectedRowIds
+      selectedRowIds: newSelectedRowIds,
+      selectedRowData: newSelectedRowData
     });
-    this.props.onSelectionChange(newSelectedRowIds);
+    this.props.onSelectionChange(newSelectedRowIds, newSelectedRowData);
   },
-  _updateSelectedRowIds: function (id, selectedRowIds, isChecked) {
-    var isFound;
+  _updateSelectedRowIds: function (row, selectedRowIds, selectedRowData, isChecked) {
+    var isFound,
+        id = row[this.props.uniqueIdentifier];
 
     if (isChecked) {
       isFound = find(selectedRowIds, function (item) {
@@ -676,9 +682,11 @@ var Griddle = React.createClass({
 
       if (isFound === undefined) {
         selectedRowIds.push(id);
+        selectedRowData.push(row);
       }
     } else {
       selectedRowIds.splice(selectedRowIds.indexOf(id), 1);
+      selectedRowData.splice(selectedRowIds.indexOf(id), 1);
     }
   },
   _getIsSelectAllChecked: function () {
@@ -717,7 +725,7 @@ var Griddle = React.createClass({
       isSelectAllChecked: false,
       selectedRowIds: []
     });
-    this.props.onSelectionChange([]);
+    this.props.onSelectionChange([], []);
   },
   //This takes the props relating to multiple selection and puts them in one object
   getMultipleSelectionObject: function () {

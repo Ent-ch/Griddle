@@ -54,8 +54,9 @@
   });
 
   var App = React.createClass({
-    onSelectionChange: function(selectedRowIds) {
-      console.log(selectedRowIds);
+    onSelectionChange: function(selectedIds, selectedData) {
+      console.log(selectedIds);
+      console.log(selectedData);
     },
     render: function() {
       return (
