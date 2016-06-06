@@ -78,11 +78,13 @@ var Griddle = React.createClass({
             "useCustomPagerComponent": false,
             "useCustomFilterer": false,
             "useCustomFilterComponent": false,
+            "useCustomSettingsComponent": false,
             "useGriddleStyles": true,
             "useGriddleIcons": true,
             "customRowComponent": null,
             "customGridComponent": null,
             "customPagerComponent": {},
+            "customSettingsComponent": null,
             "customFilterComponent": null,
             "customFilterer": null,
             "globalData": null,
@@ -509,6 +511,9 @@ var Griddle = React.createClass({
         if(this.props.useCustomFilterComponent === true && this.props.customFilterComponent === null){
             console.error("useCustomFilterComponent is set to true but no customFilterComponent was specified.");
         }
+        if (this.props.useCustomSettingsComponent === true && this.props.customSettingsComponent === null) {
+          console.error("useCustomSettingsComponent is set to true but no customSettingsComponent was specified.");
+        }
     },
     getDataForRender: function(data, cols, pageList){
         var that = this;
@@ -761,11 +766,13 @@ var Griddle = React.createClass({
     },
     getSettings: function(){
         return (this.props.showSettings ?
-            <button type="button" className={this.props.settingsToggleClassName} onClick={this.toggleColumnChooser}
-                style={this.props.useGriddleStyles ? { background: "none", border: "none", padding: 0, margin: 0, fontSize: 14} : null}>
-                    {this.props.settingsText}{this.props.settingsIconComponent}
-            </button> :
-            "");
+          ( this.props.useCustomSettingsComponent ?
+           <this.props.customSettingsComponent onClick={this.toggleColumnChooser} /> :
+           <button type="button" className={this.props.settingsToggleClassName} onClick={this.toggleColumnChooser}
+                   style={this.props.useGriddleStyles ? { background: "none", border: "none", padding: 0, margin: 0, fontSize: 14} : null}>
+             {this.props.settingsText}{this.props.settingsIconComponent}
+           </button> ) :
+          "");
     },
     getTopSection: function(filter, settings){
         if (this.props.showFilter === false && this.props.showSettings === false){

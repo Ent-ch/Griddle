@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Griddle - React Grid Component</title>
+  <meta name="description" content="Griddle - React Grid component. ">
+  <meta name="author" content="Ryan Lanciaux">
+
+  <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="styles/normalize.css">
+  <link rel="stylesheet" href="styles/skeleton.css">
+  <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/chartist.css">
+  <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
+
+  <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.0/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.0/react-dom.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script src="../html/scripts/Griddle.js"></script>
+  <script src="../html/scripts/GriddleWithCallback.js"></script>
+  <script src="../html/scripts/fakeData.js"></script>
+  <script src="../html/scripts/ChartistGraph.js"></script>
+</head>
+<body id="docs-page">
+<div id="griddle-advanced"></div>
+
+<script type="text/jsx">
+  var Settings = React.createClass({
+    onClick: function(sender) {
+      this.props.onClick();
+    },
+    render: function() {
+      return (
+        <div style={{color: 'red'}} onClick={this.onClick}>ddd</div>
+      );
+    }
+  });
+
+  var App = React.createClass({
+    onRowClick: function(sender) {
+      console.log(sender);
+    },
+    render: function() {
+      return (
+        <Griddle results={fakeData}
+                 showFilter={true}
+                 showSettings={true}
+                 columns={["name", "city", "state", "country"]}
+                 isMultipleSelection={true}
+                 uniqueIdentifier="id"
+                 initialSort="id"
+                 initialSortAscending={false}
+                 onRowClick={this.onRowClick}
+                 customSettingsComponent={Settings}
+                 useCustomSettingsComponent={true}
+        />
+      );
+    }
+  });
+
+  ReactDOM.render(
+    <App />,
+    document.getElementById("griddle-advanced"));
+</script>
+</body>
+</html>
