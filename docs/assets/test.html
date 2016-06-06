@@ -54,8 +54,8 @@
   });
 
   var App = React.createClass({
-    onRowClick: function(sender) {
-      console.log(sender);
+    onSelectionChange: function(selectedRowIds) {
+      console.log(selectedRowIds);
     },
     render: function() {
       return (
@@ -67,9 +67,10 @@
                  uniqueIdentifier="id"
                  initialSort="id"
                  initialSortAscending={false}
-                 onRowClick={this.onRowClick}
+                 onSelectionChange={this.onSelectionChange}
                  customSettingsComponent={Settings}
                  useCustomSettingsComponent={true}
+                 resultsPerPage={10}
         />
       );
     }
