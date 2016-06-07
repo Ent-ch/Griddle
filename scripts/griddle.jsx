@@ -719,7 +719,8 @@ var Griddle = React.createClass({
   },
   _getIsRowChecked: function (row) {
     console.log('_getIsRowChecked');
-    console.log(row[this.props.uniqueIdentifier], this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
+    console.log(this.props.uniqueIdentifier, row[this.props.uniqueIdentifier], this.state.selectedRowIds, this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
+
     return this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false;
   },
   getSelectedRowIds: function () {
