@@ -652,13 +652,13 @@ var Griddle = React.createClass({
       newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
     }, this);
 
-    console.log('_toggleSelectAll', newSelectedRows);
+    // console.log('_toggleSelectAll', newSelectedRows);
     this.setState({
       isSelectAllChecked: newIsSelectAllChecked,
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
   _toggleSelectRow: function (row, isChecked) {
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
@@ -668,13 +668,13 @@ var Griddle = React.createClass({
       };
 
     newSelectedRows = this._updateSelectedRowIds(row, newSelectedRows, isChecked);
-    console.log('_toggleSelectRow', newSelectedRows);
+    // console.log('_toggleSelectRow', newSelectedRows);
     this.setState({
       isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier)),
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
   _updateSelectedRowIds: function (row, selectedRows, isChecked) {
     var isFound,
@@ -698,7 +698,6 @@ var Griddle = React.createClass({
     return selectedRows;
   },
   _getIsSelectAllChecked: function () {
-
     return this.state.isSelectAllChecked;
   },
   _getAreAllRowsChecked: function (selectedRowIds, visibleRowIds) {
@@ -721,8 +720,8 @@ var Griddle = React.createClass({
     return true;
   },
   _getIsRowChecked: function (row) {
-    console.log('_getIsRowChecked');
-    console.log(this.props.uniqueIdentifier, row[this.props.uniqueIdentifier], this.state.selectedRowIds, this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
+    // console.log('_getIsRowChecked');
+    // console.log(this.props.uniqueIdentifier, row[this.props.uniqueIdentifier], this.state.selectedRowIds, this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
 
     return this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false;
   },
@@ -730,13 +729,12 @@ var Griddle = React.createClass({
     return this.state.selectedRowIds;
   },
   _resetSelectedRows: function () {
-
     this.setState({
       isSelectAllChecked: false,
       selectedRowIds: [],
       selectedRowData: []
     });
-    this.props.onSelectionChange([], []);
+    if (this.props.onSelectionChange) this.props.onSelectionChange([], []);
   },
   //This takes the props relating to multiple selection and puts them in one object
   getMultipleSelectionObject: function () {

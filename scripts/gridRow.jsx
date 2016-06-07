@@ -41,8 +41,8 @@ var GridRow = React.createClass({
     }
   },
   handleSelectionChange: function (event) {
-    console.log(this.refs.selected.checked);
-    console.log(this.props.data);
+    // console.log(this.refs.selected.checked);
+    // console.log(this.props.data);
     //hack to get around warning that's not super useful in this case
     return;
   },
