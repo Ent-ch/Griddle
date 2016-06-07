@@ -644,7 +644,7 @@ var Griddle = React.createClass({
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
   _toggleSelectRow: function _toggleSelectRow(row, isChecked) {
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
@@ -660,7 +660,7 @@ var Griddle = React.createClass({
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
   _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRows, isChecked) {
     var isFound,
@@ -716,13 +716,13 @@ var Griddle = React.createClass({
     return this.state.selectedRowIds;
   },
   _resetSelectedRows: function _resetSelectedRows() {
-
     this.setState({
       isSelectAllChecked: false,
       selectedRowIds: [],
       selectedRowData: []
     });
-    this.props.onSelectionChange([], []);
+
+    if (this.props.onSelectionChange) this.props.onSelectionChange([], []);
   },
   //This takes the props relating to multiple selection and puts them in one object
   getMultipleSelectionObject: function getMultipleSelectionObject() {
