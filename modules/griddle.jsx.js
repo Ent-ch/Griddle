@@ -424,8 +424,8 @@ var Griddle = React.createClass({
       resultsPerPage: this.props.resultsPerPage || 5,
       showColumnChooser: false,
       isSelectAllChecked: false,
-      selectedRowIds: this.props.selectedRowIds,
-      selectedRowData: this.props.selectedRowData
+      selectedRowIds: this.props.selectedRowIds || [],
+      selectedRowData: this.props.selectedRowData || []
     };
     return state;
   },

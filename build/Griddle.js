@@ -487,8 +487,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      resultsPerPage: this.props.resultsPerPage || 5,
 	      showColumnChooser: false,
 	      isSelectAllChecked: false,
-	      selectedRowIds: this.props.selectedRowIds,
-	      selectedRowData: this.props.selectedRowData
+	      selectedRowIds: this.props.selectedRowIds || [],
+	      selectedRowData: this.props.selectedRowData || []
 	    };
 	    return state;
 	  },
