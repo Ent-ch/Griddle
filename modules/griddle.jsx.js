@@ -628,55 +628,57 @@ var Griddle = React.createClass({
   _toggleSelectAll: function _toggleSelectAll() {
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
         newIsSelectAllChecked = !this.state.isSelectAllChecked,
-        newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-        newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
+        newSelectedRows = {
+      ids: JSON.parse(JSON.stringify(this.state.selectedRowIds)),
+      data: JSON.parse(JSON.stringify(this.state.selectedRowData))
+    };
 
     var self = this;
     forEach(visibleRows, function (row) {
-      self._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, newIsSelectAllChecked);
+      newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
     }, this);
 
     this.setState({
       isSelectAllChecked: newIsSelectAllChecked,
-      selectedRowIds: newSelectedRowIds,
-      selectedRowData: newSelectedRowData
+      selectedRowIds: newSelectedRows.ids,
+      selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRowIds, newSelectedRowData);
+    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
   _toggleSelectRow: function _toggleSelectRow(row, isChecked) {
-
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
-        newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-        newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
+        newSelectedRows = {
+      ids: JSON.parse(JSON.stringify(this.state.selectedRowIds)),
+      data: JSON.parse(JSON.stringify(this.state.selectedRowData))
+    };
 
-    this._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, isChecked);
+    newSelectedRows = this._updateSelectedRowIds(row, newSelectedRows, isChecked);
 
     this.setState({
-      isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-      selectedRowIds: newSelectedRowIds,
-      selectedRowData: newSelectedRowData
+      isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier)),
+      selectedRowIds: newSelectedRows.ids,
+      selectedRowData: newSelectedRows.data
     });
-    this.props.onSelectionChange(newSelectedRowIds, newSelectedRowData);
+    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
   },
-  _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRowIds, selectedRowData, isChecked) {
+  _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRows, isChecked) {
     var isFound,
         id = row[this.props.uniqueIdentifier];
 
-    // console.log(id, row, selectedRowIds, selectedRowData, isChecked);
-
     if (isChecked) {
-      isFound = find(selectedRowIds, function (item) {
+      isFound = find(selectedRows.ids, function (item) {
         return id === item;
       });
 
       if (isFound === undefined) {
-        selectedRowIds.push(id);
-        selectedRowData.push(row);
+        selectedRows.ids.push(id);
+        selectedRows.data.push(row);
       }
     } else {
-      selectedRowIds.splice(selectedRowIds.indexOf(id), 1);
-      selectedRowData.splice(selectedRowIds.indexOf(id), 1);
+      selectedRows.ids.splice(selectedRows.ids.indexOf(id), 1);
+      selectedRows.data.splice(selectedRows.ids.indexOf(id), 1);
     }
+    return selectedRows;
   },
   _getIsSelectAllChecked: function _getIsSelectAllChecked() {
 
@@ -713,7 +715,8 @@ var Griddle = React.createClass({
 
     this.setState({
       isSelectAllChecked: false,
-      selectedRowIds: []
+      selectedRowIds: [],
+      selectedRowData: []
     });
     this.props.onSelectionChange([], []);
   },
