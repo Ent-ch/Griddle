@@ -652,6 +652,7 @@ var Griddle = React.createClass({
       newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
     }, this);
 
+    console.log('_toggleSelectAll', newSelectedRows);
     this.setState({
       isSelectAllChecked: newIsSelectAllChecked,
       selectedRowIds: newSelectedRows.ids,
@@ -667,7 +668,7 @@ var Griddle = React.createClass({
       };
 
     newSelectedRows = this._updateSelectedRowIds(row, newSelectedRows, isChecked);
-
+    console.log('_toggleSelectRow', newSelectedRows);
     this.setState({
       isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier)),
       selectedRowIds: newSelectedRows.ids,
@@ -677,7 +678,8 @@ var Griddle = React.createClass({
   },
   _updateSelectedRowIds: function (row, selectedRows, isChecked) {
     var isFound,
-        id = row[this.props.uniqueIdentifier];
+        id = row[this.props.uniqueIdentifier],
+        index;
 
     if (isChecked) {
       isFound = find(selectedRows.ids, function (item) {
@@ -689,8 +691,9 @@ var Griddle = React.createClass({
         selectedRows.data.push(row);
       }
     } else {
-      selectedRows.ids.splice(selectedRows.ids.indexOf(id), 1);
-      selectedRows.data.splice(selectedRows.ids.indexOf(id), 1);
+      index = selectedRows.ids.indexOf(id);
+      selectedRows.ids.splice(index, 1);
+      selectedRows.data.splice(index, 1);
     }
     return selectedRows;
   },
