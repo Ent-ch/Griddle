@@ -214,6 +214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "previousIconComponent": "",
 	      "isMultipleSelection": false, //currently does not support subgrids
 	      "selectedRowIds": [],
+	      "selectedRowData": [],
 	      "uniqueIdentifier": "id"
 	    };
 	  },
@@ -487,7 +488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      showColumnChooser: false,
 	      isSelectAllChecked: false,
 	      selectedRowIds: this.props.selectedRowIds,
-	      selectedRowData: []
+	      selectedRowData: this.props.selectedRowData
 	    };
 	    return state;
 	  },
@@ -691,7 +692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newIsSelectAllChecked = !this.state.isSelectAllChecked,
 	        newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-	        newSelectedRowData = this.state.selectedRowData;
+	        newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
 
 	    var self = this;
 	    forEach(visibleRows, function (row) {
@@ -709,7 +710,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-	        newSelectedRowData = this.state.selectedRowData;
+	        newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
 
 	    this._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, isChecked);
 
@@ -723,6 +724,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRowIds, selectedRowData, isChecked) {
 	    var isFound,
 	        id = row[this.props.uniqueIdentifier];
+
+	    // console.log(id, row, selectedRowIds, selectedRowData, isChecked);
 
 	    if (isChecked) {
 	      isFound = find(selectedRowIds, function (item) {
@@ -761,7 +764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return true;
 	  },
-	  _getIsRowChecked: function _getIsRowChecked(row, onChangeEvent) {
+	  _getIsRowChecked: function _getIsRowChecked(row) {
 	    // console.log(row[this.props.uniqueIdentifier], this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
 	    return this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false;
 	  },
@@ -7212,8 +7215,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  handleSelectionChange: function handleSelectionChange(event) {
-	    // console.log(this.refs.selected.checked);
-	    // console.log(this.props.data);
+	    console.log(this.refs.selected.checked);
+	    console.log(this.props.data);
 	    //hack to get around warning that's not super useful in this case
 	    return;
 	  },

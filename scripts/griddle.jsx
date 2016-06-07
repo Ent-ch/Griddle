@@ -137,6 +137,7 @@ var Griddle = React.createClass({
       "previousIconComponent": "",
       "isMultipleSelection": false, //currently does not support subgrids
       "selectedRowIds": [],
+      "selectedRowData": [],
       "uniqueIdentifier": "id"
     };
   },
@@ -426,7 +427,7 @@ var Griddle = React.createClass({
       showColumnChooser: false,
       isSelectAllChecked: false,
       selectedRowIds: this.props.selectedRowIds,
-      selectedRowData: []
+      selectedRowData: this.props.selectedRowData
     };
     return state;
   },
@@ -642,7 +643,7 @@ var Griddle = React.createClass({
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
       newIsSelectAllChecked = !this.state.isSelectAllChecked,
       newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-      newSelectedRowData = this.state.selectedRowData;
+      newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
 
     var self = this;
     forEach(visibleRows, function (row) {
@@ -660,7 +661,7 @@ var Griddle = React.createClass({
 
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
         newSelectedRowIds = JSON.parse(JSON.stringify(this.state.selectedRowIds)),
-        newSelectedRowData = this.state.selectedRowData;
+        newSelectedRowData = JSON.parse(JSON.stringify(this.state.selectedRowData));
 
     this._updateSelectedRowIds(row, newSelectedRowIds, newSelectedRowData, isChecked);
 
@@ -674,6 +675,8 @@ var Griddle = React.createClass({
   _updateSelectedRowIds: function (row, selectedRowIds, selectedRowData, isChecked) {
     var isFound,
         id = row[this.props.uniqueIdentifier];
+
+    // console.log(id, row, selectedRowIds, selectedRowData, isChecked);
 
     if (isChecked) {
       isFound = find(selectedRowIds, function (item) {
@@ -712,7 +715,7 @@ var Griddle = React.createClass({
 
     return true;
   },
-  _getIsRowChecked: function (row, onChangeEvent) {
+  _getIsRowChecked: function (row) {
     // console.log(row[this.props.uniqueIdentifier], this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
     return this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false;
   },
