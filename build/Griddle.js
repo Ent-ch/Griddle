@@ -701,13 +701,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
 	    }, this);
 
-	    console.log('_toggleSelectAll', newSelectedRows);
+	    // console.log('_toggleSelectAll', newSelectedRows);
 	    this.setState({
 	      isSelectAllChecked: newIsSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectRow: function _toggleSelectRow(row, isChecked) {
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
@@ -717,13 +717,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    newSelectedRows = this._updateSelectedRowIds(row, newSelectedRows, isChecked);
-	    console.log('_toggleSelectRow', newSelectedRows);
+	    // console.log('_toggleSelectRow', newSelectedRows);
 	    this.setState({
 	      isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier)),
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRows, isChecked) {
 	    var isFound,
@@ -747,7 +747,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return selectedRows;
 	  },
 	  _getIsSelectAllChecked: function _getIsSelectAllChecked() {
-
 	    return this.state.isSelectAllChecked;
 	  },
 	  _getAreAllRowsChecked: function _getAreAllRowsChecked(selectedRowIds, visibleRowIds) {
@@ -770,8 +769,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return true;
 	  },
 	  _getIsRowChecked: function _getIsRowChecked(row) {
-	    console.log('_getIsRowChecked');
-	    console.log(this.props.uniqueIdentifier, row[this.props.uniqueIdentifier], this.state.selectedRowIds, this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
+	    // console.log('_getIsRowChecked');
+	    // console.log(this.props.uniqueIdentifier, row[this.props.uniqueIdentifier], this.state.selectedRowIds, this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false, row);
 
 	    return this.state.selectedRowIds.indexOf(row[this.props.uniqueIdentifier]) > -1 ? true : false;
 	  },
@@ -779,13 +778,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.state.selectedRowIds;
 	  },
 	  _resetSelectedRows: function _resetSelectedRows() {
-
 	    this.setState({
 	      isSelectAllChecked: false,
 	      selectedRowIds: [],
 	      selectedRowData: []
 	    });
-	    this.props.onSelectionChange([], []);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange([], []);
 	  },
 	  //This takes the props relating to multiple selection and puts them in one object
 	  getMultipleSelectionObject: function getMultipleSelectionObject() {
@@ -7223,8 +7221,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  handleSelectionChange: function handleSelectionChange(event) {
-	    console.log(this.refs.selected.checked);
-	    console.log(this.props.data);
+	    // console.log(this.refs.selected.checked);
+	    // console.log(this.props.data);
 	    //hack to get around warning that's not super useful in this case
 	    return;
 	  },
