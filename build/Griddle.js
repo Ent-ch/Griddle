@@ -194,6 +194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "enableSort": true,
 	      "onRowClick": null,
 	      "onSelectionChange": null,
+	      "onPageChange": null,
 	      /* css class names */
 	      "sortAscendingClassName": "sort-ascending",
 	      "sortDescendingClassName": "sort-descending",
@@ -386,6 +387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // coincide with the new rows on that exact page page, if moving back and forth. Better reset the selection
 	      this._resetSelectedRows();
 	    }
+	    if (this.props.onPageChange) this.props.onPageChange(number);
 	  },
 	  setColumns: function setColumns(columns) {
 	    this.columnSettings.filteredColumns = isArray(columns) ? columns : [columns];
@@ -436,6 +438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    this.setState(state);
+	    if (this.props.onPageChange) this.props.onPageChange(0);
 
 	    //When the sorting is done on the server, the previously selected rows might not correspond with the new ones.
 	    //Better reset the selection
@@ -466,14 +469,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.columnSettings.filteredColumns = nextProps.columns;
 	    }
 
-	    // if (nextProps.selectedRowIds) {
-	    //   var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-	    //
-	    //   this.setState({
-	    //     isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-	    //     selectedRowIds: nextProps.selectedRowIds
-	    //   });
-	    // }
+	    if (nextProps.selectedRowIds) {
+	      this._initSelectRow(nextProps);
+	      //
+	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+	      //
+	      // this.setState({
+	      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+	      //   selectedRowIds: nextProps.selectedRowIds
+	      // });
+	    }
 	  },
 	  getInitialState: function getInitialState() {
 	    var state = {
@@ -488,7 +493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      showColumnChooser: false,
 	      isSelectAllChecked: false,
 	      selectedRowIds: this.props.selectedRowIds || [],
-	      selectedRowData: this.props.selectedRowData || []
+	      selectedRowData: []
 	    };
 	    return state;
 	  },
@@ -519,6 +524,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        filteredColumns: this.columnSettings.filteredColumns
 	      });
 	    }
+
+	    if (this.props.onPageChange) this.props.onPageChange(0);
+	    this._initSelectRow(this.props);
 	  },
 	  //todo: clean these verify methods up
 	  verifyExternal: function verifyExternal() {
@@ -688,6 +696,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	      sortDefaultComponent: this.props.sortDefaultComponent
 	    };
 	  },
+	  _initSelectRow: function _initSelectRow(props) {
+	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
+	        newSelectedRows = {
+	      ids: JSON.parse(JSON.stringify(props.selectedRowIds)),
+	      data: []
+	    };
+
+	    var self = this;
+	    forEach(newSelectedRows.ids, function (item, index) {
+	      var isFound = false;
+	      forEach(visibleRows, function (row) {
+	        var id = row[self.props.uniqueIdentifier];
+	        if (id === item) {
+	          isFound = true;
+	          newSelectedRows.data.push(row);
+	          return false;
+	        }
+	      });
+	      if (!isFound) {
+	        newSelectedRows.ids.splice(index, 1);
+	      }
+	    });
+
+	    this.setState({
+	      selectedRowIds: newSelectedRows.ids,
+	      selectedRowData: newSelectedRows.data
+	    });
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	  },
 	  _toggleSelectAll: function _toggleSelectAll() {
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newIsSelectAllChecked = !this.state.isSelectAllChecked,
@@ -848,7 +885,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var filterStyles = null,
 	        settingsStyles = null,
-	        topContainerStyles = null;
+	        topContainerStyles = null,
+	        filterBlock,
+	        settingsBlock;
 
 	    if (this.props.useGriddleStyles) {
 	      filterStyles = this.getFilterStyles();
@@ -857,7 +896,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      topContainerStyles = this.getClearFixStyles();
 	    }
 
-	    return React.createElement('div', { className: 'top-section', style: topContainerStyles }, React.createElement('div', { className: 'griddle-filter', style: filterStyles }, filter), React.createElement('div', { className: 'griddle-settings-toggle', style: settingsStyles }, settings));
+	    filterBlock = filter == "" ? "" : React.createElement('div', { className: 'griddle-filter', style: filterStyles }, filter);
+	    settingsBlock = settings == "" ? "" : React.createElement('div', { className: 'griddle-settings-toggle', style: settingsStyles }, settings);
+
+	    return React.createElement('div', { className: 'top-section', style: topContainerStyles }, filterBlock, settingsBlock);
 	  },
 	  getPagingSection: function getPagingSection(currentPage, maxPage) {
 	    if ((this.props.showPager && !this.isInfiniteScrollEnabled() && !this.shouldUseCustomGridComponent()) === false) {
@@ -6977,7 +7019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var setPageSize = this.props.showSetPageSize ? React.createElement('div', null, React.createElement('label', { htmlFor: 'maxRows' }, this.props.maxRowsText, ':', React.createElement('select', { onChange: this.setPageSize, value: this.props.resultsPerPage }, React.createElement('option', { value: '5' }, '5'), React.createElement('option', { value: '10' }, '10'), React.createElement('option', { value: '25' }, '25'), React.createElement('option', { value: '50' }, '50'), React.createElement('option', { value: '100' }, '100')))) : "";
 
-	        return React.createElement('div', { className: 'griddle-settings', style: this.props.useGriddleStyles ? { backgroundColor: "#FFF", border: "1px solid #DDD", color: "#222", padding: "10px", marginBottom: "10px" } : null }, React.createElement('h6', null, this.props.settingsText), React.createElement('div', { className: 'griddle-columns', style: this.props.useGriddleStyles ? { clear: "both", display: "table", width: "100%", borderBottom: "1px solid #EDEDED", marginBottom: "10px" } : null }, nodes), setPageSize, toggleCustom);
+	        return React.createElement('div', { className: 'griddle-settings', style: this.props.useGriddleStyles ? { backgroundColor: "#FFF", border: "1px solid #DDD", color: "#222", padding: "10px", marginBottom: "10px" } : null }, React.createElement('div', { className: 'griddle-settings-title' }, this.props.settingsText), React.createElement('div', { className: 'griddle-columns', style: this.props.useGriddleStyles ? { clear: "both", display: "table", width: "100%", borderBottom: "1px solid #EDEDED", marginBottom: "10px" } : null }, nodes), setPageSize, toggleCustom);
 	    }
 	});
 

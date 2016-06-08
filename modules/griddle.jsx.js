@@ -131,6 +131,7 @@ var Griddle = React.createClass({
       "enableSort": true,
       "onRowClick": null,
       "onSelectionChange": null,
+      "onPageChange": null,
       /* css class names */
       "sortAscendingClassName": "sort-ascending",
       "sortDescendingClassName": "sort-descending",
@@ -323,6 +324,7 @@ var Griddle = React.createClass({
       // coincide with the new rows on that exact page page, if moving back and forth. Better reset the selection
       this._resetSelectedRows();
     }
+    if (this.props.onPageChange) this.props.onPageChange(number);
   },
   setColumns: function setColumns(columns) {
     this.columnSettings.filteredColumns = isArray(columns) ? columns : [columns];
@@ -373,6 +375,7 @@ var Griddle = React.createClass({
     };
 
     this.setState(state);
+    if (this.props.onPageChange) this.props.onPageChange(0);
 
     //When the sorting is done on the server, the previously selected rows might not correspond with the new ones.
     //Better reset the selection
@@ -403,14 +406,16 @@ var Griddle = React.createClass({
       this.columnSettings.filteredColumns = nextProps.columns;
     }
 
-    // if (nextProps.selectedRowIds) {
-    //   var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-    //
-    //   this.setState({
-    //     isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-    //     selectedRowIds: nextProps.selectedRowIds
-    //   });
-    // }
+    if (nextProps.selectedRowIds) {
+      this._initSelectRow(nextProps);
+      //
+      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+      //
+      // this.setState({
+      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+      //   selectedRowIds: nextProps.selectedRowIds
+      // });
+    }
   },
   getInitialState: function getInitialState() {
     var state = {
@@ -425,7 +430,7 @@ var Griddle = React.createClass({
       showColumnChooser: false,
       isSelectAllChecked: false,
       selectedRowIds: this.props.selectedRowIds || [],
-      selectedRowData: this.props.selectedRowData || []
+      selectedRowData: []
     };
     return state;
   },
@@ -456,6 +461,9 @@ var Griddle = React.createClass({
         filteredColumns: this.columnSettings.filteredColumns
       });
     }
+
+    if (this.props.onPageChange) this.props.onPageChange(0);
+    this._initSelectRow(this.props);
   },
   //todo: clean these verify methods up
   verifyExternal: function verifyExternal() {
@@ -625,6 +633,35 @@ var Griddle = React.createClass({
       sortDefaultComponent: this.props.sortDefaultComponent
     };
   },
+  _initSelectRow: function _initSelectRow(props) {
+    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
+        newSelectedRows = {
+      ids: JSON.parse(JSON.stringify(props.selectedRowIds)),
+      data: []
+    };
+
+    var self = this;
+    forEach(newSelectedRows.ids, function (item, index) {
+      var isFound = false;
+      forEach(visibleRows, function (row) {
+        var id = row[self.props.uniqueIdentifier];
+        if (id === item) {
+          isFound = true;
+          newSelectedRows.data.push(row);
+          return false;
+        }
+      });
+      if (!isFound) {
+        newSelectedRows.ids.splice(index, 1);
+      }
+    });
+
+    this.setState({
+      selectedRowIds: newSelectedRows.ids,
+      selectedRowData: newSelectedRows.data
+    });
+    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+  },
   _toggleSelectAll: function _toggleSelectAll() {
     var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
         newIsSelectAllChecked = !this.state.isSelectAllChecked,
@@ -785,7 +822,9 @@ var Griddle = React.createClass({
 
     var filterStyles = null,
         settingsStyles = null,
-        topContainerStyles = null;
+        topContainerStyles = null,
+        filterBlock,
+        settingsBlock;
 
     if (this.props.useGriddleStyles) {
       filterStyles = this.getFilterStyles();
@@ -794,7 +833,10 @@ var Griddle = React.createClass({
       topContainerStyles = this.getClearFixStyles();
     }
 
-    return React.createElement('div', { className: 'top-section', style: topContainerStyles }, React.createElement('div', { className: 'griddle-filter', style: filterStyles }, filter), React.createElement('div', { className: 'griddle-settings-toggle', style: settingsStyles }, settings));
+    filterBlock = filter == "" ? "" : React.createElement('div', { className: 'griddle-filter', style: filterStyles }, filter);
+    settingsBlock = settings == "" ? "" : React.createElement('div', { className: 'griddle-settings-toggle', style: settingsStyles }, settings);
+
+    return React.createElement('div', { className: 'top-section', style: topContainerStyles }, filterBlock, settingsBlock);
   },
   getPagingSection: function getPagingSection(currentPage, maxPage) {
     if ((this.props.showPager && !this.isInfiniteScrollEnabled() && !this.shouldUseCustomGridComponent()) === false) {

@@ -19,10 +19,7 @@
 
   <!-- CSS
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="styles/normalize.css">
-  <link rel="stylesheet" href="styles/skeleton.css">
-  <link rel="stylesheet" href="styles/site.css">
-  <link rel="stylesheet" href="styles/chartist.css">
+  <link rel="stylesheet" href="styles/griddle.css">
   <!-- Favicon
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png"/>
@@ -48,29 +45,51 @@
     },
     render: function() {
       return (
-        <div style={{color: 'red'}} onClick={this.onClick}>ddd</div>
+          <div className="griddleSettingsButton" style={{
+            backgroundColor: 'red',
+            height: '15px',
+            width: '15px'
+            }} onClick={this.onClick}></div>
       );
     }
   });
 
   var App = React.createClass({
+    getInitialState: function () {
+      var state = {
+        selected: [0, 100]
+      };
+      return state;
+    },
     onSelectionChange: function(selectedIds, selectedData) {
-      console.log(selectedIds);
-      console.log(selectedData);
+//      this.setState({
+//        selected: selectedIds
+//      });
+      console.log('ids', selectedIds);
+      console.log('data', selectedData);
+    },
+    onPageChange: function(page) {
+      console.log('page', page);
     },
     render: function() {
       return (
         <Griddle results={fakeData}
-                 showFilter={true}
-                 showSettings={true}
+                 showFilter={false}
+
                  columns={["name", "city", "state", "country"]}
                  isMultipleSelection={true}
                  uniqueIdentifier="id"
-                 initialSort="id"
-                 initialSortAscending={false}
+
                  onSelectionChange={this.onSelectionChange}
+                 onPageChange={this.onPageChange}
+                 useGriddleStyles={false}
+
+                 showSettings={true}
                  customSettingsComponent={Settings}
                  useCustomSettingsComponent={true}
+
+                 selectedRowIds={this.state.selected}
+
                  resultsPerPage={10}
         />
       );

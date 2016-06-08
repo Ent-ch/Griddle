@@ -1,84 +1,168 @@
+.griddle {
+  border: 1px red solid;
+}
 .griddle-container{
-  border:1px solid #DDD;
+  border: 1px solid #DDD;
 }
 
 .griddle .top-section{
-  clear:both;
-  display:table;
-  width:100%;
+  clear: both;
+  width: 100%;
 }
 
 .griddle .griddle-filter{
-  float:left;
-  width:50%;
-  text-align:left;
-  color:#222;
-  min-height:1px;
+  float: left;
+  width: 50%;
+  text-align: left;
+  color: #222;
+  min-height: 1px;
+  display: none;
 }
 
 .griddle .griddle-settings-toggle{
-  float:left;
-  width:50%;
-  text-align:right;
+  position: relative;
+  height: 3rem;
+  float: right;
 }
 
 .griddle .griddle-settings{
-  background-color:#FFF;
-  border:1px solid #DDD;
-  color:#222;
-  padding:10px;
-  margin-bottom:10px;
+  background-color: #FFF;
+  border: 1px solid #DDD;
+  color: #222;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .griddle .griddle-settings .griddle-columns{
-  clear:both;
-  display:table;
-  width:100%;
-  border-bottom:1px solid #EDEDED;
-  margin-bottom:10px;
+  clear: both;
+  display: table;
+  width: 100%;
+  border-bottom: 1px solid #EDEDED;
+  margin-bottom: 10px;
+}
+.griddle .griddle-settings .griddle-settings-title {
+  line-height: 2rem;
+  padding: 3px;
 }
 
 .griddle .griddle-settings .griddle-column-selection{
-  float:left;
-  width:20%;
+  float: left;
+  width: 100%;
+  line-height: 2rem;
 }
+
+.griddle .griddle-settings .griddle-column-selection input{
+  margin-right: 0.8rem;
+}
+
 .griddle table{
-  width:100%;table-layout:fixed;
-}
-
-.griddle th{
-  background-color:#EDEDEF;
-  border:0px;
-  border-bottom:1px solid #DDD;
-  color:#222;
-  padding:5px;
-}
-
-.griddle td{
-  padding:5px;
-  background-color:#FFF;
-  border-top-color:#DDD;
-  color:#222;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
 }
 
 .griddle .footer-container{
-  padding:0px;
-  background-color:#EDEDED;
-  border:0px;
+  padding:0;
+  border:0;
   color:#222;
+}
+.griddle-container .griddle-footer {
+  border-top: 1px solid #dddddd;
 }
 
 .griddle .griddle-previous, .griddle .griddle-page, .griddle .griddle-next{
-  float:left;
-  width:33%;
-  min-height:1px;
-  margin-top:5px;
+  float: left;
+  width: 33%;
+  min-height: 1px;
+  margin-top: 5px;
 }
 
 .griddle .griddle-page{
-  text-align:center;
+  text-align: center;
 }
 
 .griddle .griddle-next{
-  text-align:right;
+  text-align: right;
+}
+
+.griddle-container {
+  border: 0 !important;
+}
+.griddle-container tbody td:first-child {
+  width: 0 !important;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+}
+.griddle-container tbody td:not(:first-child) {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  background-color: transparent !important;
+}
+
+.griddle-container thead tr {
+  background-color: transparent !important;
+}
+.griddle-container thead tr th {
+  background-color: transparent !important;
+  cursor: pointer;
+  line-height: 3rem;
+  text-align: left;
+  border: 0;
+  border-bottom:1px solid #DDD;
+  color:#222;
+  padding: 0 5px;
+}
+.griddle-container thead tr th:first-child {
+  width: 0;
+  overflow: visible;
+}
+.griddle-container .griddle-footer {
+  background-color: transparent !important;
+  border-top: 1px solid #DDD;
+}
+
+.griddle-container table tbody td {
+  background-color: transparent !important;
+  text-align: left;
+  border: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 5px;
+  height: 2rem;
+  color:#222;
+}
+
+.griddle-container .griddle-body thead th:nth-child(2) {
+  padding-left: 2rem !important;
+}
+
+.griddle-container .griddle-body tbody td:nth-child(2) {
+  padding-left: 2rem !important;
+}
+
+.griddle-container .griddle-body thead th:not(:first-child) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.griddle-container .griddle-body tbody td:not(:first-child) {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.griddle-container input {
+  margin: 0;
+}
+
+.griddleSettingsButton {
+  margin: auto 5px;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  right: 0;
+  position: absolute;
 }
