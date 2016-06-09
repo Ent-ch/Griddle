@@ -298,7 +298,7 @@ var Griddle = React.createClass({
     var maxPage = this.getMaxPage(results);
     //re-render if we have new max page value
     if (this.state.maxPage !== maxPage) {
-      this.setState({page: page > maxPage ? maxPage : page, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns});
+      this.setState({page: 0, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns});
     }
   },
   setPage: function (number) {
