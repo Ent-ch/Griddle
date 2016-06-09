@@ -477,7 +477,7 @@ var Griddle = React.createClass({
     }
 
     if (this.props.onPageChange) this.props.onPageChange(0);
-    this._initSelectRow(this.props);
+    // this._initSelectRow(this.props);
   },
   //todo: clean these verify methods up
   verifyExternal: function () {
