@@ -445,6 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._resetSelectedRows();
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    console.log('componentWillReceiveProps', nextProps);
 	    this.setMaxPage(nextProps.results);
 	    if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
 	      this.setPageSize(nextProps.resultsPerPage);
@@ -498,6 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return state;
 	  },
 	  componentWillMount: function componentWillMount() {
+	    console.log('componentWillMount');
 	    this.verifyExternal();
 	    this.verifyCustom();
 
@@ -526,7 +528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (this.props.onPageChange) this.props.onPageChange(0);
-	    // this._initSelectRow(this.props);
+	    this._initSelectRow(this.props);
 	  },
 	  //todo: clean these verify methods up
 	  verifyExternal: function verifyExternal() {

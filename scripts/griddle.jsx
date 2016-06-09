@@ -382,6 +382,7 @@ var Griddle = React.createClass({
     this._resetSelectedRows();
   },
   componentWillReceiveProps: function (nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
     this.setMaxPage(nextProps.results);
     if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
       this.setPageSize(nextProps.resultsPerPage);
@@ -437,6 +438,7 @@ var Griddle = React.createClass({
     return state;
   },
   componentWillMount: function () {
+    console.log('componentWillMount');
     this.verifyExternal();
     this.verifyCustom();
 
@@ -477,7 +479,7 @@ var Griddle = React.createClass({
     }
 
     if (this.props.onPageChange) this.props.onPageChange(0);
-    // this._initSelectRow(this.props);
+    this._initSelectRow(this.props);
   },
   //todo: clean these verify methods up
   verifyExternal: function () {
