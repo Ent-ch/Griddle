@@ -140,7 +140,8 @@ var Griddle = React.createClass({
       "isMultipleSelection": false, //currently does not support subgrids
       "selectedRowIds": [],
       "selectedRowData": [],
-      "uniqueIdentifier": "id"
+      "uniqueIdentifier": "id",
+      "page": 0
     };
   },
   propTypes: {
@@ -297,7 +298,7 @@ var Griddle = React.createClass({
     var maxPage = this.getMaxPage(results);
     //re-render if we have new max page value
     if (this.state.maxPage !== maxPage) {
-      this.setState({page: 0, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns});
+      this.setState({page: page > maxPage ? maxPage : page, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns});
     }
   },
   setPage: function (number) {
@@ -409,7 +410,9 @@ var Griddle = React.createClass({
     if (nextProps.columns !== this.columnSettings.filteredColumns) {
       this.columnSettings.filteredColumns = nextProps.columns;
     }
-
+    if (nextProps.page !== this.props.page) {
+      this.setPage(nextProps.page);
+    }
 
     if (nextProps.selectedRowIds) {
       // this._initSelectRow(nextProps);
@@ -425,7 +428,7 @@ var Griddle = React.createClass({
   getInitialState: function () {
     var state = {
       maxPage: 0,
-      page: 0,
+      page: this.props.page || 0,
       filteredResults: null,
       filteredColumns: [],
       filter: "",
@@ -440,7 +443,8 @@ var Griddle = React.createClass({
     return state;
   },
   componentWillMount: function () {
-    console.log('componentWillMount');
+    // console.log('componentWillMount');
+
     this.verifyExternal();
     this.verifyCustom();
 
@@ -463,7 +467,11 @@ var Griddle = React.createClass({
     if (this.props.initialSort) {
       this.changeSort(this.props.initialSort);
     }
-    this.setMaxPage();
+    var maxPage = this.getMaxPage();
+    //re-render if we have new max page value
+      this.setState({page: this.props.page > maxPage ? maxPage - 1 : this.props.page, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns}, function() {
+        if (this.props.onPageChange) this.props.onPageChange(this.props.page > maxPage ? maxPage - 1 : this.props.page);
+      });
 
     //don't like the magic strings
     if (this.shouldUseCustomGridComponent()) {
@@ -480,7 +488,6 @@ var Griddle = React.createClass({
       })
     }
 
-    if (this.props.onPageChange) this.props.onPageChange(0);
     this._initSelectRow(this.props);
   },
   //todo: clean these verify methods up
