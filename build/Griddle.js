@@ -470,7 +470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (nextProps.selectedRowIds) {
-	      this._initSelectRow(nextProps);
+	      // this._initSelectRow(nextProps);
 	      //
 	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
 	      //
@@ -526,7 +526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (this.props.onPageChange) this.props.onPageChange(0);
-	    this._initSelectRow(this.props);
+	    // this._initSelectRow(this.props);
 	  },
 	  //todo: clean these verify methods up
 	  verifyExternal: function verifyExternal() {
