@@ -124,7 +124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    GridSettings: GridSettings,
 	    GridRow: GridRow
 	  },
-
+	  columnSettings: null,
 	  rowSettings: null,
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -195,6 +195,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "onRowClick": null,
 	      "onSelectionChange": null,
 	      "onPageChange": null,
+	      "onColumnChange": null,
 	      /* css class names */
 	      "sortAscendingClassName": "sort-ascending",
 	      "sortDescendingClassName": "sort-descending",
@@ -355,11 +356,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return maxPage;
 	  },
 	  setMaxPage: function setMaxPage(results) {
-	    console.log(this.state.columnSettings);
 	    var maxPage = this.getMaxPage(results);
 	    //re-render if we have new max page value
 	    if (this.state.maxPage !== maxPage) {
-	      this.setState({ page: 0, maxPage: maxPage, filteredColumns: this.state.columnSettings.filteredColumns });
+	      this.setState({ page: 0, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns });
 	    }
 	  },
 	  setPage: function setPage(number) {
@@ -391,14 +391,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.props.onPageChange) this.props.onPageChange(number);
 	  },
 	  setColumns: function setColumns(columns) {
-	    var columnSettings = this.state.columnSettings;
-
-	    columnSettings.filteredColumns = isArray(columns) ? columns : [columns];
+	    this.columnSettings.filteredColumns = isArray(columns) ? columns : [columns];
 
 	    this.setState({
-	      filteredColumns: columnSettings.filteredColumns,
-	      columnSettings: columnSettings
+	      filteredColumns: this.columnSettings.filteredColumns
 	    });
+	    if (this.props.onColumnChange) this.props.onColumnChange(columns);
 	  },
 	  nextPage: function nextPage() {
 	    var currentPage = this.getCurrentPage();
@@ -449,46 +447,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._resetSelectedRows();
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    console.log('componentWillReceiveProps', nextProps);
-	    var columnSettings = this.state.columnSettings;
+	    console.log('componentWillReceiveProps');
 	    this.setMaxPage(nextProps.results);
 	    if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
 	      this.setPageSize(nextProps.resultsPerPage);
 	    }
 	    //This will updaet the column Metadata
-	    columnSettings.columnMetadata = nextProps.columnMetadata;
+	    this.columnSettings.columnMetadata = nextProps.columnMetadata;
 	    if (nextProps.results.length > 0) {
 	      var deepKeys = deep.keys(nextProps.results[0]);
 
-	      var is_same = columnSettings.allColumns.length == deepKeys.length && columnSettings.allColumns.every(function (element, index) {
+	      var is_same = this.columnSettings.allColumns.length == deepKeys.length && this.columnSettings.allColumns.every(function (element, index) {
 	        return element === deepKeys[index];
 	      });
 
 	      if (!is_same) {
-	        columnSettings.allColumns = deepKeys;
+	        this.columnSettings.allColumns = deepKeys;
 	      }
-	    } else if (columnSettings.allColumns.length > 0) {
-	      columnSettings.allColumns = [];
+	    } else if (this.columnSettings.allColumns.length > 0) {
+	      this.columnSettings.allColumns = [];
 	    }
 
-	    if (nextProps.columns !== columnSettings.filteredColumns) {
-	      columnSettings.filteredColumns = nextProps.columns;
+	    if (nextProps.columns !== this.columnSettings.filteredColumns) {
+	      this.columnSettings.filteredColumns = nextProps.columns;
 	    }
 
 	    if (nextProps.selectedRowIds) {
 	      // this._initSelectRow(nextProps);
 	      //
-	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), columnSettings.getColumns(), true);
+	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
 	      //
 	      // this.setState({
 	      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
 	      //   selectedRowIds: nextProps.selectedRowIds
 	      // });
 	    }
-
-	    this.setState({
-	      columnSettings: columnSettings
-	    });
 	  },
 	  getInitialState: function getInitialState() {
 	    var state = {
@@ -503,48 +496,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	      showColumnChooser: false,
 	      isSelectAllChecked: false,
 	      selectedRowIds: this.props.selectedRowIds || [],
-	      selectedRowData: [],
-	      columnSettings: null
+	      selectedRowData: []
 	    };
 	    return state;
 	  },
 	  componentWillMount: function componentWillMount() {
 	    console.log('componentWillMount');
-	    var columnSettings = new ColumnProperties(this.props.results.length > 0 ? deep.keys(this.props.results[0]) : [], this.props.columns, this.props.childrenColumnName, this.props.columnMetadata, this.props.metadataColumns);
-	    var self = this;
+	    this.verifyExternal();
+	    this.verifyCustom();
 
-	    self.verifyExternal();
-	    self.verifyCustom();
+	    this.columnSettings = new ColumnProperties(this.props.results.length > 0 ? deep.keys(this.props.results[0]) : [], this.props.columns, this.props.childrenColumnName, this.props.columnMetadata, this.props.metadataColumns);
 
-	    self.rowSettings = new RowProperties(self.props.rowMetadata, self.props.useCustomTableRowComponent && self.props.customTableRowComponent ? self.props.customTableRowComponent : GridRow, self.props.useCustomTableRowComponent);
+	    this.rowSettings = new RowProperties(this.props.rowMetadata, this.props.useCustomTableRowComponent && this.props.customTableRowComponent ? this.props.customTableRowComponent : GridRow, this.props.useCustomTableRowComponent);
 
-	    this.setState({
-	      columnSettings: columnSettings
-	    }, function () {
-	      console.log('dine');
-	      if (self.props.initialSort) {
-	        self.changeSort(self.props.initialSort);
-	      }
-	      self.setMaxPage();
+	    if (this.props.initialSort) {
+	      this.changeSort(this.props.initialSort);
+	    }
+	    this.setMaxPage();
 
-	      //don't like the magic strings
-	      if (self.shouldUseCustomGridComponent()) {
-	        self.setState({
-	          customComponentType: "grid"
-	        });
-	      } else if (self.shouldUseCustomRowComponent()) {
-	        self.setState({
-	          customComponentType: "row"
-	        });
-	      } else {
-	        self.setState({
-	          filteredColumns: self.state.columnSettings.filteredColumns
-	        });
-	      }
+	    //don't like the magic strings
+	    if (this.shouldUseCustomGridComponent()) {
+	      this.setState({
+	        customComponentType: "grid"
+	      });
+	    } else if (this.shouldUseCustomRowComponent()) {
+	      this.setState({
+	        customComponentType: "row"
+	      });
+	    } else {
+	      this.setState({
+	        filteredColumns: this.columnSettings.filteredColumns
+	      });
+	    }
 
-	      if (self.props.onPageChange) self.props.onPageChange(0);
-	      self._initSelectRow(self.props);
-	    });
+	    if (this.props.onPageChange) this.props.onPageChange(0);
+	    this._initSelectRow(this.props);
 	  },
 	  //todo: clean these verify methods up
 	  verifyExternal: function verifyExternal() {
@@ -663,7 +649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
-	    var meta = this.state.columnSettings.getMetadataColumns;
+	    var meta = this.columnSettings.getMetadataColumns;
 
 	    var transformedData = [];
 
@@ -715,7 +701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  },
 	  _initSelectRow: function _initSelectRow(props) {
-	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.state.columnSettings.getColumns(), true),
+	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newSelectedRows = {
 	      ids: JSON.parse(JSON.stringify(props.selectedRowIds)),
 	      data: []
@@ -744,7 +730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectAll: function _toggleSelectAll() {
-	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.state.columnSettings.getColumns(), true),
+	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newIsSelectAllChecked = !this.state.isSelectAllChecked,
 	        newSelectedRows = {
 	      ids: JSON.parse(JSON.stringify(this.state.selectedRowIds)),
@@ -765,7 +751,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectRow: function _toggleSelectRow(row, isChecked) {
-	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.state.columnSettings.getColumns(), true),
+	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newSelectedRows = {
 	      ids: JSON.parse(JSON.stringify(this.state.selectedRowIds)),
 	      data: JSON.parse(JSON.stringify(this.state.selectedRowData))
@@ -969,7 +955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return React.createElement('div', { className: 'griddle-body' }, React.createElement(GridTable, { useGriddleStyles: this.props.useGriddleStyles,
 	      noDataSection: noDataSection,
 	      showNoData: showNoData,
-	      columnSettings: this.state.columnSettings,
+	      columnSettings: this.columnSettings,
 	      rowSettings: this.rowSettings,
 	      sortSettings: sortProperties,
 	      multipleSelectionSettings: multipleSelectionProperties,
@@ -1034,17 +1020,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var topSection = this.getTopSection(filter, settings);
 
 	    var keys = [];
-	    var cols = this.state.columnSettings.getColumns();
+	    var cols = this.columnSettings.getColumns();
 	    //figure out which columns are displayed and show only those
 	    var data = this.getDataForRender(results, cols, true);
 
-	    var meta = this.state.columnSettings.getMetadataColumns();
+	    var meta = this.columnSettings.getMetadataColumns();
 
 	    // Grab the column keys from the first results
 	    keys = deep.keys(omit(results[0], meta));
 
 	    // sort keys by order
-	    keys = this.state.columnSettings.orderColumns(keys);
+	    keys = this.columnSettings.orderColumns(keys);
 
 	    // Grab the current and max page values.
 	    var currentPage = this.getCurrentPage();
