@@ -387,44 +387,45 @@ var Griddle = React.createClass({
     this._resetSelectedRows();
   },
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
-    this.setMaxPage(nextProps.results);
-    if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
-      this.setPageSize(nextProps.resultsPerPage);
-    }
-    //This will updaet the column Metadata
-    this.columnSettings.columnMetadata = nextProps.columnMetadata;
-    if (nextProps.results.length > 0) {
-      var deepKeys = deep.keys(nextProps.results[0]);
-
-      var is_same = this.columnSettings.allColumns.length == deepKeys.length && this.columnSettings.allColumns.every(function (element, index) {
-        return element === deepKeys[index];
-      });
-
-      if (!is_same) {
-        this.columnSettings.allColumns = deepKeys;
-      }
-    } else if (this.columnSettings.allColumns.length > 0) {
-      this.columnSettings.allColumns = [];
-    }
-
-    if (nextProps.columns !== this.columnSettings.filteredColumns) {
-      this.columnSettings.filteredColumns = nextProps.columns;
-    }
-    if (nextProps.page !== this.props.page) {
-      this.setPage(nextProps.page);
-    }
-
-    if (nextProps.selectedRowIds) {
-      // this._initSelectRow(nextProps);
-      //
-      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-      //
-      // this.setState({
-      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-      //   selectedRowIds: nextProps.selectedRowIds
-      // });
-    }
+    // console.log('componentWillReceiveProps');
+    // this.setMaxPage(nextProps.results);
+    // if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
+    //   this.setPageSize(nextProps.resultsPerPage);
+    // }
+    // //This will updaet the column Metadata
+    // this.columnSettings.columnMetadata = nextProps.columnMetadata;
+    // if (nextProps.results.length > 0) {
+    //   var deepKeys = deep.keys(nextProps.results[0]);
+    //
+    //   var is_same = (this.columnSettings.allColumns.length == deepKeys.length) && this.columnSettings.allColumns.every(function (element, index) {
+    //       return element === deepKeys[index];
+    //     });
+    //
+    //   if (!is_same) {
+    //     this.columnSettings.allColumns = deepKeys;
+    //   }
+    // }
+    // else if (this.columnSettings.allColumns.length > 0) {
+    //   this.columnSettings.allColumns = [];
+    // }
+    //
+    // if (nextProps.columns !== this.columnSettings.filteredColumns) {
+    //   this.columnSettings.filteredColumns = nextProps.columns;
+    // }
+    // if (nextProps.page !== this.props.page) {
+    //   this.setPage(nextProps.page);
+    // }
+    //
+    // if (nextProps.selectedRowIds) {
+    //   // this._initSelectRow(nextProps);
+    //   //
+    //   // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+    //   //
+    //   // this.setState({
+    //   //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+    //   //   selectedRowIds: nextProps.selectedRowIds
+    //   // });
+    // }
   },
   getInitialState: function getInitialState() {
     var state = {

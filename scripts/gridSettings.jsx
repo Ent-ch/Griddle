@@ -52,23 +52,23 @@ var GridSettings = React.createClass({
                 }
 
                 if(typeof meta !== "undefined" && meta != null && meta.locked){
-                    return <div className="column checkbox"><label><input type="checkbox" disabled name="check" checked={checked}  data-name={col}/>{displayName}</label></div>
+                    return <div className="column checkbox"><label className="checkbox"><input type="checkbox" disabled name="check" checked={checked}  data-name={col}/><span></span>{displayName}</label></div>
                 } else if(typeof meta !== "undefined" && meta != null && typeof meta.visible !== "undefined" && meta.visible === false){
                     return null;
                 }
-                return <div className="griddle-column-selection checkbox" key={col} style={that.props.useGriddleStyles ? { "float": "left", width: "20%"} : null }><label><input type="checkbox" name="check" onChange={that.handleChange} checked={checked} data-name={col}/>{displayName}</label></div>
+                return <div className="griddle-column-selection checkbox" key={col} style={that.props.useGriddleStyles ? { "float": "left", width: "20%"} : null }><label className="checkbox"><input type="checkbox" name="check" onChange={that.handleChange} checked={checked} data-name={col}/><span></span>{displayName}</label></div>
             });
         }
 
         var toggleCustom = that.props.enableToggleCustom ?
                 (<div className="form-group">
-                    <label htmlFor="maxRows"><input type="checkbox" checked={this.props.useCustomComponent} onChange={this.props.toggleCustomComponent} /> {this.props.enableCustomFormatText}</label>
+                    <label htmlFor="maxRows" className="checkbox"><input type="checkbox" checked={this.props.useCustomComponent} onChange={this.props.toggleCustomComponent} /><span></span> {this.props.enableCustomFormatText}</label>
                 </div>)
                 : "";
 
         var setPageSize = this.props.showSetPageSize ? (<div>
                     <label htmlFor="maxRows">{this.props.maxRowsText}:
-                        <select onChange={this.setPageSize} value={this.props.resultsPerPage}>
+                        <select className="form-control" onChange={this.setPageSize} value={this.props.resultsPerPage}>
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="25">25</option>

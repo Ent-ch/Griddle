@@ -450,44 +450,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._resetSelectedRows();
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    console.log('componentWillReceiveProps');
-	    this.setMaxPage(nextProps.results);
-	    if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
-	      this.setPageSize(nextProps.resultsPerPage);
-	    }
-	    //This will updaet the column Metadata
-	    this.columnSettings.columnMetadata = nextProps.columnMetadata;
-	    if (nextProps.results.length > 0) {
-	      var deepKeys = deep.keys(nextProps.results[0]);
-
-	      var is_same = this.columnSettings.allColumns.length == deepKeys.length && this.columnSettings.allColumns.every(function (element, index) {
-	        return element === deepKeys[index];
-	      });
-
-	      if (!is_same) {
-	        this.columnSettings.allColumns = deepKeys;
-	      }
-	    } else if (this.columnSettings.allColumns.length > 0) {
-	      this.columnSettings.allColumns = [];
-	    }
-
-	    if (nextProps.columns !== this.columnSettings.filteredColumns) {
-	      this.columnSettings.filteredColumns = nextProps.columns;
-	    }
-	    if (nextProps.page !== this.props.page) {
-	      this.setPage(nextProps.page);
-	    }
-
-	    if (nextProps.selectedRowIds) {
-	      // this._initSelectRow(nextProps);
-	      //
-	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-	      //
-	      // this.setState({
-	      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-	      //   selectedRowIds: nextProps.selectedRowIds
-	      // });
-	    }
+	    // console.log('componentWillReceiveProps');
+	    // this.setMaxPage(nextProps.results);
+	    // if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
+	    //   this.setPageSize(nextProps.resultsPerPage);
+	    // }
+	    // //This will updaet the column Metadata
+	    // this.columnSettings.columnMetadata = nextProps.columnMetadata;
+	    // if (nextProps.results.length > 0) {
+	    //   var deepKeys = deep.keys(nextProps.results[0]);
+	    //
+	    //   var is_same = (this.columnSettings.allColumns.length == deepKeys.length) && this.columnSettings.allColumns.every(function (element, index) {
+	    //       return element === deepKeys[index];
+	    //     });
+	    //
+	    //   if (!is_same) {
+	    //     this.columnSettings.allColumns = deepKeys;
+	    //   }
+	    // }
+	    // else if (this.columnSettings.allColumns.length > 0) {
+	    //   this.columnSettings.allColumns = [];
+	    // }
+	    //
+	    // if (nextProps.columns !== this.columnSettings.filteredColumns) {
+	    //   this.columnSettings.filteredColumns = nextProps.columns;
+	    // }
+	    // if (nextProps.page !== this.props.page) {
+	    //   this.setPage(nextProps.page);
+	    // }
+	    //
+	    // if (nextProps.selectedRowIds) {
+	    //   // this._initSelectRow(nextProps);
+	    //   //
+	    //   // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+	    //   //
+	    //   // this.setState({
+	    //   //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+	    //   //   selectedRowIds: nextProps.selectedRowIds
+	    //   // });
+	    // }
 	  },
 	  getInitialState: function getInitialState() {
 	    var state = {
@@ -7021,17 +7022,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                if (typeof meta !== "undefined" && meta != null && meta.locked) {
-	                    return React.createElement('div', { className: 'column checkbox' }, React.createElement('label', null, React.createElement('input', { type: 'checkbox', disabled: true, name: 'check', checked: checked, 'data-name': col }), displayName));
+	                    return React.createElement('div', { className: 'column checkbox' }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', { type: 'checkbox', disabled: true, name: 'check', checked: checked, 'data-name': col }), React.createElement('span', null), displayName));
 	                } else if (typeof meta !== "undefined" && meta != null && typeof meta.visible !== "undefined" && meta.visible === false) {
 	                    return null;
 	                }
-	                return React.createElement('div', { className: 'griddle-column-selection checkbox', key: col, style: that.props.useGriddleStyles ? { "float": "left", width: "20%" } : null }, React.createElement('label', null, React.createElement('input', { type: 'checkbox', name: 'check', onChange: that.handleChange, checked: checked, 'data-name': col }), displayName));
+	                return React.createElement('div', { className: 'griddle-column-selection checkbox', key: col, style: that.props.useGriddleStyles ? { "float": "left", width: "20%" } : null }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', { type: 'checkbox', name: 'check', onChange: that.handleChange, checked: checked, 'data-name': col }), React.createElement('span', null), displayName));
 	            });
 	        }
 
-	        var toggleCustom = that.props.enableToggleCustom ? React.createElement('div', { className: 'form-group' }, React.createElement('label', { htmlFor: 'maxRows' }, React.createElement('input', { type: 'checkbox', checked: this.props.useCustomComponent, onChange: this.props.toggleCustomComponent }), ' ', this.props.enableCustomFormatText)) : "";
+	        var toggleCustom = that.props.enableToggleCustom ? React.createElement('div', { className: 'form-group' }, React.createElement('label', { htmlFor: 'maxRows', className: 'checkbox' }, React.createElement('input', { type: 'checkbox', checked: this.props.useCustomComponent, onChange: this.props.toggleCustomComponent }), React.createElement('span', null), ' ', this.props.enableCustomFormatText)) : "";
 
-	        var setPageSize = this.props.showSetPageSize ? React.createElement('div', null, React.createElement('label', { htmlFor: 'maxRows' }, this.props.maxRowsText, ':', React.createElement('select', { onChange: this.setPageSize, value: this.props.resultsPerPage }, React.createElement('option', { value: '5' }, '5'), React.createElement('option', { value: '10' }, '10'), React.createElement('option', { value: '25' }, '25'), React.createElement('option', { value: '50' }, '50'), React.createElement('option', { value: '100' }, '100')))) : "";
+	        var setPageSize = this.props.showSetPageSize ? React.createElement('div', null, React.createElement('label', { htmlFor: 'maxRows' }, this.props.maxRowsText, ':', React.createElement('select', { className: 'form-control', onChange: this.setPageSize, value: this.props.resultsPerPage }, React.createElement('option', { value: '5' }, '5'), React.createElement('option', { value: '10' }, '10'), React.createElement('option', { value: '25' }, '25'), React.createElement('option', { value: '50' }, '50'), React.createElement('option', { value: '100' }, '100')))) : "";
 
 	        return React.createElement('div', { className: 'griddle-settings', style: this.props.useGriddleStyles ? { backgroundColor: "#FFF", border: "1px solid #DDD", color: "#222", padding: "10px", marginBottom: "10px" } : null }, React.createElement('div', { className: 'griddle-settings-title' }, this.props.settingsText), React.createElement('div', { className: 'griddle-columns', style: this.props.useGriddleStyles ? { clear: "both", display: "table", width: "100%", borderBottom: "1px solid #EDEDED", marginBottom: "10px" } : null }, nodes), setPageSize, toggleCustom);
 	    }
