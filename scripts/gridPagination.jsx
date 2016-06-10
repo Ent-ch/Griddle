@@ -60,7 +60,7 @@ var GridPagination = React.createClass({
             <div style={this.props.useGriddleStyles ? { minHeight: "35px" } : null }>
                 <div className={this.props.previousClassName} style={leftStyle}>{previous}</div>
                 <div className="griddle-page" style={middleStyle}>
-                    <select class="form-control" value={this.props.currentPage+1} onChange={this.pageChange}>
+                    <select className="form-control" value={this.props.currentPage+1} onChange={this.pageChange}>
                         {options}
                     </select> / {this.props.maxPage}
                 </div>
