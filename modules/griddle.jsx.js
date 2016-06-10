@@ -133,6 +133,7 @@ var Griddle = React.createClass({
       "onSelectionChange": null,
       "onPageChange": null,
       "onColumnChange": null,
+      "onPageSizeChange": null,
       /* css class names */
       "sortAscendingClassName": "sort-ascending",
       "sortDescendingClassName": "sort-descending",
@@ -256,6 +257,7 @@ var Griddle = React.createClass({
     //make this better.
     this.state.resultsPerPage = size;
     this.setMaxPage();
+    if (this.props.onPageSizeChange) this.props.onPageSizeChange(size);
   },
   toggleColumnChooser: function toggleColumnChooser() {
     this.setState({
