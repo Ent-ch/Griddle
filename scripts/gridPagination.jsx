@@ -27,11 +27,11 @@ var GridPagination = React.createClass({
         var next = "";
 
         if(this.props.currentPage > 0){
-            previous = <button type="button" onClick={this.props.previous} style={this.props.useGriddleStyles ? {"color": "#222", border: "none", background: "none", margin: "0 0 0 10px"} : null}>{this.props.previousIconComponent}{this.props.previousText}</button>
+            previous = <button type="button" class="btn btn-default" onClick={this.props.previous} style={this.props.useGriddleStyles ? {"color": "#222", border: "none", background: "none", margin: "0 0 0 10px"} : null}>{this.props.previousIconComponent}{this.props.previousText}</button>
         }
 
         if(this.props.currentPage !== (this.props.maxPage -1)){
-            next = <button type="button" onClick={this.props.next} style={this.props.useGriddleStyles ? {"color":"#222", border: "none", background: "none", margin: "0 10px 0 0"} : null}>{this.props.nextText}{this.props.nextIconComponent}</button>
+            next = <button type="button" class="btn btn-default" onClick={this.props.next} style={this.props.useGriddleStyles ? {"color":"#222", border: "none", background: "none", margin: "0 10px 0 0"} : null}>{this.props.nextText}{this.props.nextIconComponent}</button>
         }
 
         var leftStyle = null;
@@ -60,13 +60,14 @@ var GridPagination = React.createClass({
             <div style={this.props.useGriddleStyles ? { minHeight: "35px" } : null }>
                 <div className={this.props.previousClassName} style={leftStyle}>{previous}</div>
                 <div className="griddle-page" style={middleStyle}>
-                    <select value={this.props.currentPage+1} onChange={this.pageChange}>
+                    <select class="form-control" value={this.props.currentPage+1} onChange={this.pageChange}>
                         {options}
                     </select> / {this.props.maxPage}
                 </div>
                 <div className={this.props.nextClassName} style={rightStyle}>{next}</div>
             </div>
         )
+
     }
 })
 

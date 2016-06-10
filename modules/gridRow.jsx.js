@@ -123,11 +123,11 @@ var GridRow = React.createClass({
     if (nodes && this.props.multipleSelectionSettings && this.props.multipleSelectionSettings.isMultipleSelection) {
       var selectedRowIds = this.props.multipleSelectionSettings.getSelectedRowIds();
 
-      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('input', {
+      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', {
         type: 'checkbox',
         checked: this.props.multipleSelectionSettings.getIsRowChecked(dataView),
         onChange: this.handleSelectionChange,
-        ref: 'selected' })));
+        ref: 'selected' }), React.createElement('span', null))));
     }
 
     //Get the row from the row settings.

@@ -109,9 +109,9 @@ var GridTitle = React.createClass({
         });
 
         if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
-            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('input', { type: 'checkbox',
+            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', { type: 'checkbox',
                 checked: this.props.multipleSelectionSettings.getIsSelectAllChecked(),
-                onChange: this.handleSelectionChange })));
+                onChange: this.handleSelectionChange }), React.createElement('span', null))));
         }
 
         //Get the row from the row settings.

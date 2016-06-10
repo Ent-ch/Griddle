@@ -99,9 +99,12 @@ var GridTitle = React.createClass({
 
         if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
             nodes.unshift(<th key="selection" onClick={this.toggleSelectAll} style={titleStyles}>
+              <label class="checkbox">
                 <input type="checkbox"
                        checked={this.props.multipleSelectionSettings.getIsSelectAllChecked()}
                        onChange={this.handleSelectionChange}/>
+                <span></span>
+              </label>
             </th>);
         }
 

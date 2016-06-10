@@ -123,11 +123,14 @@ var GridRow = React.createClass({
 
       nodes.unshift(
         <td key="selection" style={columnStyles}>
-          <input
-            type="checkbox"
-            checked={this.props.multipleSelectionSettings.getIsRowChecked(dataView)}
-            onChange={this.handleSelectionChange}
-            ref="selected"/>
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              checked={this.props.multipleSelectionSettings.getIsRowChecked(dataView)}
+              onChange={this.handleSelectionChange}
+              ref="selected"/>
+            <span></span>
+          </label>
         </td>
       );
     }

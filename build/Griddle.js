@@ -1471,9 +1471,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
-	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('input', { type: 'checkbox',
+	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', { type: 'checkbox',
 	                checked: this.props.multipleSelectionSettings.getIsSelectAllChecked(),
-	                onChange: this.handleSelectionChange })));
+	                onChange: this.handleSelectionChange }), React.createElement('span', null))));
 	        }
 
 	        //Get the row from the row settings.
@@ -6922,11 +6922,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var next = "";
 
 	        if (this.props.currentPage > 0) {
-	            previous = React.createElement('button', { type: 'button', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
+	            previous = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
 	        }
 
 	        if (this.props.currentPage !== this.props.maxPage - 1) {
-	            next = React.createElement('button', { type: 'button', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
+	            next = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
 	        }
 
 	        var leftStyle = null;
@@ -6951,7 +6951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            options.push(React.createElement('option', { value: i, key: i }, i));
 	        }
 
-	        return React.createElement('div', { style: this.props.useGriddleStyles ? { minHeight: "35px" } : null }, React.createElement('div', { className: this.props.previousClassName, style: leftStyle }, previous), React.createElement('div', { className: 'griddle-page', style: middleStyle }, React.createElement('select', { value: this.props.currentPage + 1, onChange: this.pageChange }, options), ' / ', this.props.maxPage), React.createElement('div', { className: this.props.nextClassName, style: rightStyle }, next));
+	        return React.createElement('div', { style: this.props.useGriddleStyles ? { minHeight: "35px" } : null }, React.createElement('div', { className: this.props.previousClassName, style: leftStyle }, previous), React.createElement('div', { className: 'griddle-page', style: middleStyle }, React.createElement('select', { 'class': 'form-control', value: this.props.currentPage + 1, onChange: this.pageChange }, options), ' / ', this.props.maxPage), React.createElement('div', { className: this.props.nextClassName, style: rightStyle }, next));
 	    }
 	});
 
@@ -7353,11 +7353,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (nodes && this.props.multipleSelectionSettings && this.props.multipleSelectionSettings.isMultipleSelection) {
 	      var selectedRowIds = this.props.multipleSelectionSettings.getSelectedRowIds();
 
-	      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('input', {
+	      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', {
 	        type: 'checkbox',
 	        checked: this.props.multipleSelectionSettings.getIsRowChecked(dataView),
 	        onChange: this.handleSelectionChange,
-	        ref: 'selected' })));
+	        ref: 'selected' }), React.createElement('span', null))));
 	    }
 
 	    //Get the row from the row settings.
