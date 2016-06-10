@@ -1471,7 +1471,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
-	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', { type: 'checkbox',
+	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', { type: 'checkbox',
 	                checked: this.props.multipleSelectionSettings.getIsSelectAllChecked(),
 	                onChange: this.handleSelectionChange }), React.createElement('span', null))));
 	        }
@@ -6922,11 +6922,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var next = "";
 
 	        if (this.props.currentPage > 0) {
-	            previous = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
+	            previous = React.createElement('button', { type: 'button', className: 'btn btn-default', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
 	        }
 
 	        if (this.props.currentPage !== this.props.maxPage - 1) {
-	            next = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
+	            next = React.createElement('button', { type: 'button', className: 'btn btn-default', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
 	        }
 
 	        var leftStyle = null;
@@ -7353,7 +7353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (nodes && this.props.multipleSelectionSettings && this.props.multipleSelectionSettings.isMultipleSelection) {
 	      var selectedRowIds = this.props.multipleSelectionSettings.getSelectedRowIds();
 
-	      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('label', { 'class': 'checkbox' }, React.createElement('input', {
+	      nodes.unshift(React.createElement('td', { key: 'selection', style: columnStyles }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', {
 	        type: 'checkbox',
 	        checked: this.props.multipleSelectionSettings.getIsRowChecked(dataView),
 	        onChange: this.handleSelectionChange,

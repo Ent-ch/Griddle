@@ -31,11 +31,11 @@ var GridPagination = React.createClass({
         var next = "";
 
         if (this.props.currentPage > 0) {
-            previous = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
+            previous = React.createElement('button', { type: 'button', className: 'btn btn-default', onClick: this.props.previous, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 0 0 10px" } : null }, this.props.previousIconComponent, this.props.previousText);
         }
 
         if (this.props.currentPage !== this.props.maxPage - 1) {
-            next = React.createElement('button', { type: 'button', 'class': 'btn btn-default', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
+            next = React.createElement('button', { type: 'button', className: 'btn btn-default', onClick: this.props.next, style: this.props.useGriddleStyles ? { "color": "#222", border: "none", background: "none", margin: "0 10px 0 0" } : null }, this.props.nextText, this.props.nextIconComponent);
         }
 
         var leftStyle = null;
