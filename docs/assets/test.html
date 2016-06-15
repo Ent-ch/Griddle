@@ -54,17 +54,46 @@
     }
   });
 
+  var Pagination = React.createClass({
+    pageChange: function(event) {
+      var newPage = parseInt(event.target.value);
+      if (newPage > 0 && newPage <= this.props.maxPage) {
+        this.props.setPage(newPage - 1);
+      } else {
+        console.log('wrong value')
+      }
+    },
+    render: function() {
+      console.log(this.props);
+      return (
+        <div className="ddd">
+          <div className="ddd">
+            <button type="button" onClick={this.props.previous}>Prev</button>
+          </div>
+          <div className="griddle-page">
+            <input type="text" placeholder={"Page " + (this.props.currentPage + 1)}  onChange={this.pageChange}/>
+            of {this.props.maxPage}
+          </div>
+          <div className="sdsd">
+            <button type="button" onClick={this.props.next}>Next</button>
+          </div>
+        </div>
+      );
+    }
+  });
+
   var App = React.createClass({
     getInitialState: function () {
       var state = {
-        selected: [0, 100]
+        selected: []
       };
       return state;
     },
-    onSelectionChange: function(selectedIds, selectedData) {
+    onSelectionChange: function(isSelectAll, selectedIds, selectedData) {
 //      this.setState({
 //        selected: selectedIds
 //      });
+      console.log('isSelectAll', isSelectAll);
       console.log('ids', selectedIds);
       console.log('data', selectedData);
     },
@@ -88,10 +117,14 @@
                  customSettingsComponent={Settings}
                  useCustomSettingsComponent={true}
 
+                 useCustomPagerComponent={true}
+                 customPagerComponent={Pagination}
+
+                 isSelectAllChecked={true}
                  selectedRowIds={this.state.selected}
 
                  resultsPerPage={10}
-                 page={100}
+                 page={0}
         />
       );
     }

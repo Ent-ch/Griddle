@@ -26,14 +26,17 @@ var GridSettings = React.createClass({
         this.props.setPageSize(value);
     },
     handleChange: function(event){
-        var columnName = event.target.dataset ? event.target.dataset.name : event.target.getAttribute('data-name');
-        if(event.target.checked === true && includes(this.props.selectedColumns, columnName) === false){
-            this.props.selectedColumns.push(columnName);
-            this.props.setColumns(this.props.selectedColumns);
-        } else {
-            /* redraw with the selected columns minus the one just unchecked */
-            this.props.setColumns(without(this.props.selectedColumns, columnName));
+      var columnName = event.target.dataset ? event.target.dataset.name : event.target.getAttribute('data-name');
+
+      if (event.target.checked === true && includes(this.props.selectedColumns, columnName) === false) {
+          this.props.selectedColumns.push(columnName);
+          this.props.setColumns(this.props.selectedColumns);
+      } else {
+        if (this.props.selectedColumns.length > 1) {
+          /* redraw with the selected columns minus the one just unchecked */
+          this.props.setColumns(without(this.props.selectedColumns, columnName));
         }
+      }
     },
     render: function(){
         var that = this;

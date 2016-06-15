@@ -292,7 +292,7 @@ var GridTable = React.createClass({
             </div>;
     }
 
-    return  <div ref="scrollable" onScroll={this.gridScroll} style={gridStyle}>
+    return  <div ref="scrollable" onScroll={this.gridScroll} className="griddle-container-table" style={gridStyle}>
               <table className={this.props.className} style={(this.props.useGriddleStyles&&tableStyle)||null}>
                   {tableHeading}
                   {nodes}

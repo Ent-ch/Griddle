@@ -216,6 +216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      "nextIconComponent": "",
 	      "previousIconComponent": "",
 	      "isMultipleSelection": false, //currently does not support subgrids
+	      "isSelectAllChecked": false,
 	      "selectedRowIds": [],
 	      "selectedRowData": [],
 	      "uniqueIdentifier": "id",
@@ -501,7 +502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      columnFilters: {},
 	      resultsPerPage: this.props.resultsPerPage || 5,
 	      showColumnChooser: false,
-	      isSelectAllChecked: false,
+	      isSelectAllChecked: this.props.isSelectAllChecked || false,
 	      selectedRowIds: this.props.selectedRowIds || [],
 	      selectedRowData: []
 	    };
@@ -719,26 +720,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    var self = this;
-	    forEach(newSelectedRows.ids, function (item, index) {
-	      var isFound = false;
+	    if (props.isSelectAllChecked) {
+	      newSelectedRows = {
+	        ids: [],
+	        data: []
+	      };
 	      forEach(visibleRows, function (row) {
-	        var id = row[self.props.uniqueIdentifier];
-	        if (id === item) {
-	          isFound = true;
-	          newSelectedRows.data.push(row);
-	          return false;
+	        newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, props.isSelectAllChecked);
+	      }, this);
+	    } else {
+	      forEach(newSelectedRows.ids, function (item, index) {
+	        var isFound = false;
+	        forEach(visibleRows, function (row) {
+	          var id = row[self.props.uniqueIdentifier];
+	          if (id === item) {
+	            isFound = true;
+	            newSelectedRows.data.push(row);
+	            return false;
+	          }
+	        });
+	        if (!isFound) {
+	          newSelectedRows.ids.splice(index, 1);
 	        }
 	      });
-	      if (!isFound) {
-	        newSelectedRows.ids.splice(index, 1);
-	      }
-	    });
+	    }
 
 	    this.setState({
+	      isSelectAllChecked: props.isSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(props.isSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectAll: function _toggleSelectAll() {
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
@@ -759,23 +771,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(newIsSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectRow: function _toggleSelectRow(row, isChecked) {
 	    var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true),
 	        newSelectedRows = {
 	      ids: JSON.parse(JSON.stringify(this.state.selectedRowIds)),
 	      data: JSON.parse(JSON.stringify(this.state.selectedRowData))
-	    };
+	    },
+	        isSelectAllChecked = false;
 
 	    newSelectedRows = this._updateSelectedRowIds(row, newSelectedRows, isChecked);
 	    // console.log('_toggleSelectRow', newSelectedRows);
+	    isSelectAllChecked = this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier));
 	    this.setState({
-	      isSelectAllChecked: this._getAreAllRowsChecked(newSelectedRows.ids, map(visibleRows, this.props.uniqueIdentifier)),
+	      isSelectAllChecked: isSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    if (this.props.onSelectionChange) this.props.onSelectionChange(newSelectedRows.ids, newSelectedRows.data);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(isSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _updateSelectedRowIds: function _updateSelectedRowIds(row, selectedRows, isChecked) {
 	    var isFound,
@@ -835,7 +849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      selectedRowIds: [],
 	      selectedRowData: []
 	    });
-	    if (this.props.onSelectionChange) this.props.onSelectionChange([], []);
+	    if (this.props.onSelectionChange) this.props.onSelectionChange(false, [], []);
 	  },
 	  //This takes the props relating to multiple selection and puts them in one object
 	  getMultipleSelectionObject: function getMultipleSelectionObject() {
@@ -1353,7 +1367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return React.createElement('div', null, React.createElement('table', { className: this.props.className, style: this.props.useGriddleStyles && tableStyle || null }, tableHeading), React.createElement('div', { ref: 'scrollable', onScroll: this.gridScroll, style: gridStyle }, React.createElement('table', { className: this.props.className, style: this.props.useGriddleStyles && tableStyle || null }, nodes, loadingContent, pagingContent)));
 	    }
 
-	    return React.createElement('div', { ref: 'scrollable', onScroll: this.gridScroll, style: gridStyle }, React.createElement('table', { className: this.props.className, style: this.props.useGriddleStyles && tableStyle || null }, tableHeading, nodes, loadingContent, pagingContent));
+	    return React.createElement('div', { ref: 'scrollable', onScroll: this.gridScroll, className: 'griddle-container-table', style: gridStyle }, React.createElement('table', { className: this.props.className, style: this.props.useGriddleStyles && tableStyle || null }, tableHeading, nodes, loadingContent, pagingContent));
 	  }
 	});
 
@@ -6997,12 +7011,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    handleChange: function handleChange(event) {
 	        var columnName = event.target.dataset ? event.target.dataset.name : event.target.getAttribute('data-name');
+
 	        if (event.target.checked === true && includes(this.props.selectedColumns, columnName) === false) {
 	            this.props.selectedColumns.push(columnName);
 	            this.props.setColumns(this.props.selectedColumns);
 	        } else {
-	            /* redraw with the selected columns minus the one just unchecked */
-	            this.props.setColumns(without(this.props.selectedColumns, columnName));
+	            if (this.props.selectedColumns.length > 1) {
+	                /* redraw with the selected columns minus the one just unchecked */
+	                this.props.setColumns(without(this.props.selectedColumns, columnName));
+	            }
 	        }
 	    },
 	    render: function render() {
