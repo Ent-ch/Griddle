@@ -668,15 +668,11 @@ var Griddle = React.createClass({
       };
 
     var self = this;
-    if (props.isSelectAllChecked) {
-      newSelectedRows = {
-        ids: [],
-        data: []
-      };
-      forEach(visibleRows, function (row) {
-        newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, props.isSelectAllChecked);
-      }, this);
-    } else {
+    // if (props.isSelectAllChecked) {
+    //   forEach(visibleRows, function (row) {
+    //     newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, props.isSelectAllChecked);
+    //   }, this);
+    // } else {
       forEach(newSelectedRows.ids, function (item, index) {
         var isFound = false;
         forEach(visibleRows, function (row) {
@@ -691,7 +687,7 @@ var Griddle = React.createClass({
           newSelectedRows.ids.splice(index, 1);
         }
       });
-    }
+    // }
 
 
     this.setState({
