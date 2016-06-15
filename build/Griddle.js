@@ -1429,6 +1429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    },
 	    toggleSelectAll: function toggleSelectAll(event) {
+	        event.preventDefault();
 	        this.props.multipleSelectionSettings.toggleSelectAll();
 	    },
 	    handleSelectionChange: function handleSelectionChange(event) {
@@ -1487,7 +1488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 
 	        if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
-	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', { type: 'checkbox',
+	            nodes.unshift(React.createElement('th', { key: 'selection', style: titleStyles }, React.createElement('label', { onClick: this.toggleSelectAll, className: 'checkbox' }, React.createElement('input', { type: 'checkbox',
 	                checked: this.props.multipleSelectionSettings.getIsSelectAllChecked()
 	            }), React.createElement('span', null))));
 	        }
