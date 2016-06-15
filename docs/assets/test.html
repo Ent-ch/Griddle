@@ -64,7 +64,7 @@
       }
     },
     render: function() {
-      console.log(this.props);
+//      console.log(this.props);
       return (
         <div className="ddd">
           <div className="ddd">
@@ -85,17 +85,22 @@
   var App = React.createClass({
     getInitialState: function () {
       var state = {
-        selected: []
+        isSelectAll: false,
+        selectedIds: [],
+        selectedData: []
       };
       return state;
     },
     onSelectionChange: function(isSelectAll, selectedIds, selectedData) {
-//      this.setState({
-//        selected: selectedIds
-//      });
+
       console.log('isSelectAll', isSelectAll);
       console.log('ids', selectedIds);
       console.log('data', selectedData);
+      this.setState({
+        isSelectAll: isSelectAll,
+        selectedIds: selectedIds,
+        selectedData: selectedData
+      });
     },
     onPageChange: function(page) {
       console.log('page', page);
@@ -120,8 +125,8 @@
                  useCustomPagerComponent={true}
                  customPagerComponent={Pagination}
 
-                 isSelectAllChecked={true}
-                 selectedRowIds={this.state.selected}
+                 isSelectAllChecked={this.state.isSelectAll}
+                 selectedRowIds={this.state.selectedIds}
 
                  resultsPerPage={10}
                  page={0}
