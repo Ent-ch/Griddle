@@ -679,7 +679,7 @@ var Griddle = React.createClass({
     // }
 
     this.setState({
-      // isSelectAllChecked: props.isSelectAllChecked,
+      isSelectAllChecked: props.isSelectAllChecked,
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });

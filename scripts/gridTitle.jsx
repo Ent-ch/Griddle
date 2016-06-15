@@ -102,7 +102,7 @@ var GridTitle = React.createClass({
               <label className="checkbox">
                 <input type="checkbox"
                        checked={this.props.multipleSelectionSettings.getIsSelectAllChecked()}
-                       onChange={this.handleSelectionChange}/>
+                       />
                 <span></span>
               </label>
             </th>);

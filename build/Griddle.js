@@ -742,7 +742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // }
 
 	    this.setState({
-	      // isSelectAllChecked: props.isSelectAllChecked,
+	      isSelectAllChecked: props.isSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
@@ -1488,8 +1488,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (nodes && this.props.multipleSelectionSettings.isMultipleSelection) {
 	            nodes.unshift(React.createElement('th', { key: 'selection', onClick: this.toggleSelectAll, style: titleStyles }, React.createElement('label', { className: 'checkbox' }, React.createElement('input', { type: 'checkbox',
-	                checked: this.props.multipleSelectionSettings.getIsSelectAllChecked(),
-	                onChange: this.handleSelectionChange }), React.createElement('span', null))));
+	                checked: this.props.multipleSelectionSettings.getIsSelectAllChecked()
+	            }), React.createElement('span', null))));
 	        }
 
 	        //Get the row from the row settings.
