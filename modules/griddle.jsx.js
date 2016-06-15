@@ -679,7 +679,7 @@ var Griddle = React.createClass({
     // }
 
     this.setState({
-      isSelectAllChecked: props.isSelectAllChecked,
+      isSelectAllChecked: !props.isSelectAllChecked,
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
@@ -699,7 +699,6 @@ var Griddle = React.createClass({
       newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
     }, this);
 
-    // console.log('_toggleSelectAll', newSelectedRows);
     this.setState({
       isSelectAllChecked: newIsSelectAllChecked,
       selectedRowIds: newSelectedRows.ids,

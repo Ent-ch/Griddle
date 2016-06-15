@@ -742,7 +742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // }
 
 	    this.setState({
-	      isSelectAllChecked: props.isSelectAllChecked,
+	      isSelectAllChecked: !props.isSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
@@ -762,7 +762,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      newSelectedRows = self._updateSelectedRowIds(row, newSelectedRows, newIsSelectAllChecked);
 	    }, this);
 
-	    // console.log('_toggleSelectAll', newSelectedRows);
 	    this.setState({
 	      isSelectAllChecked: newIsSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
