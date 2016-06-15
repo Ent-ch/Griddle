@@ -742,11 +742,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // }
 
 	    this.setState({
-	      isSelectAllChecked: !props.isSelectAllChecked,
+	      // isSelectAllChecked: props.isSelectAllChecked,
 	      selectedRowIds: newSelectedRows.ids,
 	      selectedRowData: newSelectedRows.data
 	    });
-	    console.log('_initSelectRow');
+	    console.log('_initSelectRow', props);
 	    if (this.props.onSelectionChange) this.props.onSelectionChange(props.isSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
 	  },
 	  _toggleSelectAll: function _toggleSelectAll() {
