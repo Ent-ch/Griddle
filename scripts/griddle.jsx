@@ -439,7 +439,7 @@ var Griddle = React.createClass({
       columnFilters: {},
       resultsPerPage: this.props.resultsPerPage || 5,
       showColumnChooser: false,
-      isSelectAllChecked: this.props.isSelectAllChecked || false,
+      isSelectAllChecked: this.props.isSelectAllChecked,
       selectedRowIds: this.props.selectedRowIds || [],
       selectedRowData: []
     };
