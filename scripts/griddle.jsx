@@ -695,7 +695,7 @@ var Griddle = React.createClass({
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    console.log('_initSelectRow', props);
+    // console.log('_initSelectRow', props);
     if (this.props.onSelectionChange) this.props.onSelectionChange(props.isSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
   },
   _toggleSelectAll: function () {
@@ -716,7 +716,7 @@ var Griddle = React.createClass({
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    console.log('_toggleSelectAll');
+    // console.log('_toggleSelectAll');
     if (this.props.onSelectionChange) this.props.onSelectionChange(newIsSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
   },
   _toggleSelectRow: function (row, isChecked) {
@@ -735,7 +735,7 @@ var Griddle = React.createClass({
       selectedRowIds: newSelectedRows.ids,
       selectedRowData: newSelectedRows.data
     });
-    console.log('_toggleSelectRow');
+    // console.log('_toggleSelectRow');
     if (this.props.onSelectionChange) this.props.onSelectionChange(isSelectAllChecked, newSelectedRows.ids, newSelectedRows.data);
   },
   _updateSelectedRowIds: function (row, selectedRows, isChecked) {
@@ -796,7 +796,7 @@ var Griddle = React.createClass({
       selectedRowIds: [],
       selectedRowData: []
     });
-    console.log('_toggleSelectRow');
+    // console.log('_toggleSelectRow');
     if (this.props.onSelectionChange) this.props.onSelectionChange(false, [], []);
   },
   //This takes the props relating to multiple selection and puts them in one object
