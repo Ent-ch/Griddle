@@ -389,10 +389,10 @@ var Griddle = React.createClass({
   },
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     // console.log('componentWillReceiveProps');
-    // this.setMaxPage(nextProps.results);
-    // if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
-    //   this.setPageSize(nextProps.resultsPerPage);
-    // }
+    this.setMaxPage(nextProps.results);
+    if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
+      this.setPageSize(nextProps.resultsPerPage);
+    }
     // //This will updaet the column Metadata
     // this.columnSettings.columnMetadata = nextProps.columnMetadata;
     // if (nextProps.results.length > 0) {
@@ -417,16 +417,16 @@ var Griddle = React.createClass({
     //   this.setPage(nextProps.page);
     // }
     //
-    // if (nextProps.selectedRowIds) {
-    //   // this._initSelectRow(nextProps);
-    //   //
-    //   // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-    //   //
-    //   // this.setState({
-    //   //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-    //   //   selectedRowIds: nextProps.selectedRowIds
-    //   // });
-    // }
+    if (nextProps.selectedRowIds) {
+      // this._initSelectRow(nextProps);
+      //
+      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+      //
+      // this.setState({
+      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+      //   selectedRowIds: nextProps.selectedRowIds
+      // });
+    }
   },
   getInitialState: function getInitialState() {
     var state = {
