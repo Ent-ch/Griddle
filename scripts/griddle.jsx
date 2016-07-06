@@ -418,9 +418,9 @@ var Griddle = React.createClass({
     // }
     //
     if (nextProps.selectedRowIds) {
-      this._initSelectRow(nextProps);
-
-      var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+      // this._initSelectRow(nextProps);
+      //
+      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
 
       // this.setState({
       //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
