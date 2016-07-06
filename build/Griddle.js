@@ -481,14 +481,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // }
 	    //
 	    if (nextProps.selectedRowIds) {
-	      // this._initSelectRow(nextProps);
-	      //
-	      // var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
-	      //
-	      // this.setState({
-	      //   isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
-	      //   selectedRowIds: nextProps.selectedRowIds
-	      // });
+	      this._initSelectRow(nextProps);
+
+	      var visibleRows = this.getDataForRender(this.getCurrentResults(), this.columnSettings.getColumns(), true);
+
+	      this.setState({
+	        isSelectAllChecked: this._getAreAllRowsChecked(nextProps.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier)),
+	        selectedRowIds: nextProps.selectedRowIds
+	      });
 	    }
 	  },
 	  getInitialState: function getInitialState() {
